@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ModalBottom extends StatelessWidget {
-  ModalBottom({
-    super.key,
-  });
+  ModalBottom({super.key, required this.addTask});
+  final Function addTask;
+  TextEditingController controller = TextEditingController();
 
-  String textValue = '';
+  // String textValue = '';
 
-  void _handeleOnclick() {
+  void _handeleOnclick(BuildContext context) {
     // ignore: avoid_print
-    print(textValue);
+    final name = controller.text;
+    if (name.isEmpty) {
+      return;
+    }
+    addTask(name);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -21,9 +28,7 @@ class ModalBottom extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-              onChanged: (text) {
-                textValue = text;
-              },
+              controller: controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Your Task',
@@ -36,7 +41,7 @@ class ModalBottom extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: _handeleOnclick,
+                onPressed: () => _handeleOnclick(context),
                 child: const Text('Add Task'),
               ),
             )

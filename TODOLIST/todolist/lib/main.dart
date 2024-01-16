@@ -11,19 +11,33 @@ void main(List<String> args) {
     theme: ThemeData(
       primaryColor: Colors.blueAccent,
     ),
-    home: MyApp(),
+    home: const MyApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  final List<DataItems> items = [
-    DataItems(id: '1', name: 'Tập thể dục'),
-    DataItems(id: '2', name: 'Bơi lội'),
-    DataItems(id: '3', name: 'Làm việc'),
-    DataItems(id: '4', name: 'Ăn trưa'),
-  ];
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final List<DataItems> items = [];
+
+  void _handleAddTask(String name) {
+    final newItem = DataItems(id: DateTime.now().toString(), name: name);
+
+    setState(() {
+      items.add(newItem);
+    });
+  }
+
+  void _handleDeleteTask(String id) {
+    setState(() {
+      items.removeWhere((item) => item.id == id);
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -39,7 +53,13 @@ class MyApp extends StatelessWidget {
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 31, vertical: 20),
           child: Column(
-            children: items.map((item) => CardBody(item: item)).toList(),
+            children: items
+                .map((item) => CardBody(
+                      index: items.indexOf(item),
+                      item: item,
+                      handleDelete: _handleDeleteTask,
+                    ))
+                .toList(),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -52,7 +72,7 @@ class MyApp extends StatelessWidget {
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return ModalBottom();
+                return ModalBottom(addTask: _handleAddTask);
               },
             );
           },
