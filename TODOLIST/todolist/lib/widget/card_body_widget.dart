@@ -7,14 +7,16 @@ class CardBody extends StatelessWidget {
       {Key? key,
       required this.item,
       required this.handleDelete,
+      required this.handleEdit,
       required this.index})
       : super(key: key);
 
   final Function handleDelete;
   // ignore: prefer_typing_uninitialized_variables
   var item;
+  // ignore: prefer_typing_uninitialized_variables
   var index;
-
+  final Function handleEdit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,10 +49,27 @@ class CardBody extends StatelessWidget {
                 }
                 return;
               },
-              child: const Icon(
-                Icons.delete_outline,
-                color: Color(0xff4B4B4B),
-                size: 20,
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.delete_outline,
+                    color: Color(0xff4B4B4B),
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    // Sử dụng GestureDetector cho icon sửa
+                    onTap: () {
+                      handleEdit(item
+                          .id); // Gọi hàm xử lý sự kiện sửa và truyền item.id vào
+                    },
+                    child: const Icon(
+                      Icons.edit,
+                      color: Color(0xff4B4B4B),
+                      size: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

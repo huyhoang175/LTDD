@@ -39,6 +39,30 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _handleEdit(String id) {
+    var itemToEdit = items.firstWhere((item) => item.id == id);
+    showModalBottomSheet(
+      backgroundColor: Colors.grey,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ModalBottom(
+          itemToEdit: itemToEdit,
+          saveChanges: (editedItem) {
+            setState(() {
+              items[items.indexWhere((item) => item.id == id)] = editedItem;
+            });
+            Navigator.pop(context);
+          },
+          addTask: _handleAddTask, 
+        );
+      },
+    );
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,6 +82,7 @@ class _MyAppState extends State<MyApp> {
                       index: items.indexOf(item),
                       item: item,
                       handleDelete: _handleDeleteTask,
+                      handleEdit: _handleEdit,
                     ))
                 .toList(),
           ),
@@ -72,7 +97,10 @@ class _MyAppState extends State<MyApp> {
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return ModalBottom(addTask: _handleAddTask);
+                return ModalBottom(
+                  addTask: _handleAddTask,
+                  saveChanges: (editedItem) {},
+                );
               },
             );
           },

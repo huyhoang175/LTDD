@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/modal/iteams.dart';
 
 // ignore: must_be_immutable
 class ModalBottom extends StatelessWidget {
-  ModalBottom({super.key, required this.addTask});
+  ModalBottom(
+      {Key? key,
+      required this.addTask,
+      this.itemToEdit,
+      required Null Function(dynamic editedItem) saveChanges})
+      : super(key: key);
+
   final Function addTask;
+  final DataItems? itemToEdit;
   TextEditingController controller = TextEditingController();
 
-  // String textValue = '';
-
-  void _handeleOnclick(BuildContext context) {
-    // ignore: avoid_print
+  void _handleOnClick(BuildContext context) {
     final name = controller.text;
     if (name.isEmpty) {
       return;
     }
-    addTask(name);
+
+    if (itemToEdit != null) {
+      // Nếu itemToEdit tồn tại, tạo một bản sao của nó với giá trị name mới
+      DataItems updatedItem = DataItems(id: itemToEdit!.id, name: name);
+      // Truyền bản sao đã được cập nhật vào hàm addTask
+      addTask(updatedItem);
+    } else {
+      // Nếu itemToEdit không tồn tại, thực hiện thêm mới
+      addTask(DataItems(id: DateTime.now().toString(), name: name));
+    }
 
     Navigator.pop(context);
   }
@@ -41,7 +55,7 @@ class ModalBottom extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () => _handeleOnclick(context),
+                onPressed: () => _handleOnClick(context),
                 child: const Text('Add Task'),
               ),
             )
