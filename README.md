@@ -1,2 +1,0 @@
-# LTDD
-TODOLIST
