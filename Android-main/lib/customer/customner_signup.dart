@@ -9,33 +9,33 @@ import 'package:todolists/widgets/snackbart.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class CustomerRegister extends StatefulWidget {
+class CustomerRegister extends StatefulWidget {//Khai báo một lớp con _CustomerRegisterState kế thừa từ State<CustomerRegister>.
   const CustomerRegister({Key? key}) : super(key: key);
 
   @override
   State<CustomerRegister> createState() => _CustomerRegisterState();
 }
 
-class _CustomerRegisterState extends State<CustomerRegister> {
+class _CustomerRegisterState extends State<CustomerRegister> {//Khai báo các biến cần thiết để lưu thông tin của người dùng khi đăng ký.
   late String name;
   late String email;
   late String password;
   late String profileImage;
   late String _uid;
   bool processing = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();//Khởi tạo các GlobalKey cho Form và ScaffoldMessenger.
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  bool passwordVisible = false;
+  bool passwordVisible = false;//Khai báo biến passwordVisible để xác định xem mật khẩu nên được hiển thị hay không và một đối tượng ImagePicker để chọn hình ảnh từ thiết bị
   final ImagePicker _picker = ImagePicker();
 
-  XFile? _imageFile;
+  XFile? _imageFile;//Khai báo biến để lưu trữ hình ảnh được chọn và lỗi nếu có khi chọn hình ảnh.
   dynamic _pickedImageError;
-  CollectionReference customers =
+  CollectionReference customers =//Tạo một tham chiếu tới collection "customers" trong Firestore.
       FirebaseFirestore.instance.collection('customers');
 
-  void _pickImageFromCamera() async {
+  void _pickImageFromCamera() async {//Hàm _pickImageFromCamera để chọn hình ảnh từ camera.
     try {
       final pickedImage = await _picker.pickImage(
           source: ImageSource.camera,
@@ -53,7 +53,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
     }
   }
 
-  void _pickImageFromGallery() async {
+  void _pickImageFromGallery() async {//Hàm _pickImageFromGallery để chọn hình ảnh từ thư viện ảnh của thiết bị.
     try {
       final pickedImage = await _picker.pickImage(
           source: ImageSource.gallery,
@@ -71,16 +71,16 @@ class _CustomerRegisterState extends State<CustomerRegister> {
     }
   }
 
-  void signUp() async {
+  void signUp() async {//Hàm signUp để xử lý quá trình đăng ký tài khoản.
     setState(() {
-      processing = true;
+      processing = true;//Đặt trạng thái xử lý thành true để hiển thị tiến trình đang được thực hiện.
     });
-    if (_formKey.currentState!.validate()) {
-      if (_imageFile != null) {
-        try {
+    if (_formKey.currentState!.validate()) {//Kiểm tra xem dữ liệu nhập vào từ form có hợp lệ không.
+      if (_imageFile != null) {//Kiểm tra xem người dùng đã chọn hình ảnh hay chưa.
+        try {//Gọi các hàm xử lý đăng ký tài khoản và gửi xác nhận email.
           await AuthRepo.singUpWithEmailAndPassword(email, password);
           AuthRepo.sendEmailVerification();
-          firebase_storage.Reference ref = firebase_storage
+          firebase_storage.Reference ref = firebase_storage//Lưu ảnh profile của người dùng vào Firebase Storage và cập nhật thông tin người dùng.
               .FirebaseStorage.instance
               .ref('cust-image/$email.jpg');
           await ref.putFile(File(_imageFile!.path));
@@ -88,7 +88,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           profileImage = await ref.getDownloadURL();
           AuthRepo.updateUserName(name);
           AuthRepo.updateProfileImage(profileImage);
-          await customers.doc(_uid).set({
+          await customers.doc(_uid).set({//Thêm thông tin người dùng vào Firestore và làm sạch form sau khi đăng ký thành công.
             'name': name,
             'email': email,
             'profileimage': profileImage,
@@ -100,7 +100,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           setState(() {
             _imageFile = null;
           });
-          await Future.delayed(const Duration(microseconds: 100))
+          await Future.delayed(const Duration(microseconds: 100))//Xử lý quá trình đăng ký tài khoản và hiển thị thông báo nếu có lỗi.
               .whenComplete(() => Navigator.pushReplacementNamed(
                   // ignore: use_build_context_synchronously
                   context,

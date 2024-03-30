@@ -15,12 +15,14 @@ class EditTaskScreen extends StatefulWidget {
 }
 
 class _EditTaskScreenState extends State<EditTaskScreen> {
-  late TextEditingController taskController;
+  late TextEditingController
+      taskController; //Khai báo các biến taskController để điều khiển TextField, selectedDate để lưu ngày được chọn và selectedTime để lưu thời gian được chọn.
   late DateTime selectedDate;
   late TimeOfDay selectedTime;
 
   @override
   void initState() {
+    //Phương thức initState được gọi khi widget được khởi tạo. Ở đây, chúng ta khởi tạo các biến và gọi fetchTaskData để lấy dữ liệu công việc.
     super.initState();
     // Initialize controller and fetch task data
     taskController = TextEditingController();
@@ -30,6 +32,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   }
 
   Future<void> fetchTaskData() async {
+    //Phương thức fetchTaskData được sử dụng để lấy dữ liệu của công việc từ Firestore.
     try {
       // Fetch task data based on widget.taskId
       DocumentSnapshot taskSnapshot = await FirebaseFirestore.instance
@@ -40,6 +43,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           .get();
 
       if (taskSnapshot.exists) {
+        //Dữ liệu công việc được lấy từ Firestore và gán vào các biến. Nếu không có công việc nào tìm thấy, thông báo "Task not found" sẽ được in ra.
         Map<String, dynamic> taskData =
             taskSnapshot.data() as Map<String, dynamic>;
         // Set task data to the controller and state
@@ -58,6 +62,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   }
 
   Future<void> updateTask() async {
+    //Phương thức updateTask được sử dụng để cập nhật thông tin của công việc vào Firestore.
     try {
       // Reference to the Firestore document to update
       DocumentReference docRef = FirebaseFirestore.instance
@@ -67,17 +72,20 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           .doc(widget.taskId);
 
       // Convert TimeOfDay to a string in "HH:mm" format
-      String formattedTime = '${selectedTime.hour}:${selectedTime.minute}';
+      String formattedTime =
+          '${selectedTime.hour}:${selectedTime.minute}'; //Thời gian được chọn được chuyển đổi thành chuỗi theo định dạng "HH:mm".
 
       // Update the document in Firestore
       await docRef.update({
+        //Cập nhật các trường task, date, time trong Firestore với thông tin mới của công việc.
         'task': taskController.text,
         'date': selectedDate,
         'time': formattedTime,
       });
 
       // Navigate back to HomeMain screen after updating
-      Navigator.pop(context);
+      Navigator.pop(
+          context); //Sau khi cập nhật xong, màn hình sẽ chuyển về màn hình trước đó.
     } catch (e) {
       // Handle error
       print('Error updating task: $e');
@@ -87,7 +95,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   @override
   void dispose() {
     // Clean up controller when widget is disposed
-    taskController.dispose();
+    taskController
+        .dispose(); //Phương thức dispose được gọi khi widget được hủy. Ở đây, chúng ta giải phóng bộ nhớ cho taskController.
     super.dispose();
   }
 
@@ -103,6 +112,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
+              //Hiển thị TextField để nhập thông tin công việc.
               'Task:',
               style: TextStyle(
                 fontSize: 18,
@@ -117,7 +127,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 hintText: 'Enter task',
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(
+                height:
+                    16), //Khi người dùng nhấn vào, một hộp thoại hiển thị cho phép họ chọn ngày.
             const Text(
               'Date:',
               style: TextStyle(
@@ -141,6 +153,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 }
               },
               child: AbsorbPointer(
+                //Hiển thị TextFormField để hiển thị ngày được chọn.
                 child: TextFormField(
                   controller: TextEditingController(
                     text: DateFormat.yMd().format(selectedDate),
@@ -152,7 +165,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(
+                height:
+                    16), //Khi người dùng nhấn vào, một hộp thoại hiển thị cho phép họ chọn thời gian.
             const Text(
               'Time:',
               style: TextStyle(
@@ -174,6 +189,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 }
               },
               child: AbsorbPointer(
+                //Hiển thị TextFormField để hiển thị thời gian được chọn.
                 child: TextFormField(
                   controller: TextEditingController(
                     text: selectedTime.format(context),
@@ -185,7 +201,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(
+                height:
+                    24), //Hiển thị nút "Update Task" để người dùng có thể cập nhật thông tin của công việc.
             ElevatedButton(
               onPressed: updateTask,
               child: const Text('Update Task'),

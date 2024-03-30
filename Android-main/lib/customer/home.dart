@@ -7,6 +7,7 @@ import 'package:todolists/widgets/yellow_button.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTask extends StatefulWidget {
+  //AddTask là một StatefulWidget để hiển thị màn hình thêm công việc mới.
   const AddTask({Key? key}) : super(key: key);
 
   @override
@@ -14,13 +15,19 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldMessengerState> scaffoldKey =
+  final GlobalKey<FormState> formKey = GlobalKey<
+      FormState>(); //formKey: GlobalKey để quản lý trạng thái của Form.
+  final GlobalKey<ScaffoldMessengerState>
+      scaffoldKey = //scaffoldKey: GlobalKey để hiển thị các snackbars hoặc scaffold.
       GlobalKey<ScaffoldMessengerState>();
-  late String task = ''; // Khởi tạo task rỗng
-  late DateTime selectedDate = DateTime.now();
-  late TimeOfDay selectedTime = TimeOfDay.now();
+  late String task =
+      ''; // Khởi tạo task rỗng//task: Chuỗi để lưu tên công việc.
+  late DateTime selectedDate =
+      DateTime.now(); //selectedDate: DateTime để lưu ngày được chọn.
+  late TimeOfDay selectedTime =
+      TimeOfDay.now(); //selectedTime: TimeOfDay để lưu thời gian được chọn.
   List<String> taskOptions = [
+    //taskOptions: Một danh sách các tùy chọn công việc.
     'Go to shopping',
     'Go to Soccer',
     'Go to bed',
@@ -30,13 +37,19 @@ class _AddTaskState extends State<AddTask> {
     'Go driver',
     'Task orther',
   ];
-  late String selectedTaskOption =
+  late String
+      selectedTaskOption = //selectedTaskOption: Chuỗi để lưu tùy chọn công việc được chọn.
       'Go to shopping'; // Khởi tạo giá trị mặc định
   bool isOtherTaskSelected =
       false; // Biến để kiểm tra xem có chọn Task orther không
 
   @override
   Widget build(BuildContext context) {
+    //Phương thức build xây dựng cấu trúc của màn hình:
+// Hiển thị một Scaffold có tiêu đề "Add Task".
+// Trong body, có một Form chứa Column để hiển thị nội dung.
+// Column chứa các phần tử như TextFormField hoặc DropdownButtonFormField để nhập thông tin công việc.
+// Có một biến isOtherTaskSelected để xác định xem có hiển thị TextFormField cho "Task orther" hay không.
     return ScaffoldMessenger(
       key: scaffoldKey,
       child: Scaffold(
@@ -59,6 +72,9 @@ class _AddTaskState extends State<AddTask> {
                       // Dropdown hoặc TextFormField dựa vào isOtherTaskSelected
                       isOtherTaskSelected
                           ? Padding(
+                              //Phần tiếp theo của build chứa các TextFormField để chọn ngày và thời gian:
+// Sử dụng GestureDetector để mở hộp thoại DatePicker hoặc TimePicker khi người dùng nhấn vào.
+// AbsorbPointer được sử dụng để ngăn người dùng nhập trực tiếp vào TextFormField.
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
@@ -173,6 +189,8 @@ class _AddTaskState extends State<AddTask> {
                   ),
                 ),
                 Center(
+                  //Cuối cùng, build chứa một nút YellowButton để thêm công việc mới.
+// Khi nút này được nhấn, dữ liệu từ Form được lưu và thêm vào Firestore. Nếu dữ liệu hợp lệ, người dùng sẽ được chuyển đến màn hình chính.
                   child: YellowButton(
                     label: 'Add New Task',
                     onPressed: () async {
@@ -223,3 +241,15 @@ var textFormDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(25),
   ),
 );
+
+// Biến textFormDecoration được khai báo để cung cấp các thuộc tính trang trí cho các TextFormField trong ứng dụng. Dưới đây là giải thích cho mỗi thuộc tính:
+
+// labelText: Văn bản hiển thị như một nhãn trên TextFormField khi nó không rỗng.
+// hintText: Văn bản hiển thị như một gợi ý trong TextFormField khi nó rỗng.
+// border: Định dạng viền của TextFormField khi không được focus.
+// enabledBorder: Định dạng viền của TextFormField khi nó được kích hoạt nhưng không được focus.
+// borderSide: Định dạng đường biên của viền, bao gồm màu sắc và độ dày.
+// borderRadius: Định dạng góc bo của viền.
+// focusedBorder: Định dạng viền của TextFormField khi nó được focus.
+// borderSide: Định dạng đường biên của viền, bao gồm màu sắc và độ dày.
+// borderRadius: Định dạng góc bo của viền.

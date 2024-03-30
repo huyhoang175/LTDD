@@ -17,7 +17,7 @@ class AppBarBackButton extends StatelessWidget {
       },
     );
   }
-}
+}//Đây là một widget IconButton có một mũi tên trở lại (icon) màu đen. Widget này được sử dụng để hiển thị nút quay lại trên thanh tiêu đề. Khi người dùng nhấn vào nút này, nó sẽ đóng màn hình hiện tại và quay lại màn hình trước đó bằng cách sử dụng 
 
 class YellowBackButton extends StatelessWidget {
   const YellowBackButton({
@@ -36,7 +36,7 @@ class YellowBackButton extends StatelessWidget {
       },
     );
   }
-}
+}//Tương tự như AppBarBackButton, widget này cũng là một IconButton với mũi tên trở lại màu vàng. Cũng như trên, khi người dùng nhấn vào nút này, nó sẽ đóng màn hình hiện tại và quay lại màn hình trước đó.
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
@@ -57,4 +57,4 @@ class AppBarTitle extends StatelessWidget {
           letterSpacing: 1.5),
     );
   }
-}
+}//AppBarTitle: Đây là một widget Text được sử dụng để hiển thị tiêu đề của thanh tiêu đề (AppBar). Tiêu đề này có thể được tùy chỉnh thông qua thuộc tính title. Trong ví dụ này, tiêu đề được thiết lập thành một chuỗi cố định và được định dạng với một số thuộc tính như màu sắc, kiểu chữ, kích thước và khoảng cách giữa các ký tự.

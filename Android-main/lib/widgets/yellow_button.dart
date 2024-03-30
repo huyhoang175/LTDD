@@ -25,3 +25,13 @@ class YellowButton extends StatelessWidget {
     );
   }
 }
+// Trong đoạn mã trên, chúng ta có một widget là YellowButton, được sử dụng để tạo ra một nút màu vàng có kích thước và chức năng tùy chỉnh. Dưới đây là một số điểm chính:
+
+// Class YellowButton: Đây là một StatelessWidget được sử dụng để xây dựng nút màu vàng.
+
+// Các thuộc tính:
+
+// label: Đây là nội dung văn bản hiển thị trên nút.
+// onPressed: Đây là hàm được gọi khi nút được nhấn.
+// width: Độ rộng của nút, được chỉ định dưới dạng một phần trăm của chiều rộng màn hình.
+// Phương thức build: Trong phương thức này, chúng ta xây dựng nút sử dụng một Container với kích thước và trang trí tùy chỉnh. Container này chứa một MaterialButton để xử lý sự kiện nhấn nút và hiển thị nội dung văn bản (label). Kích thước của nút được xác định bằng cách sử dụng MediaQuery để lấy kích thước của màn hình và nhân với width được cung cấp.

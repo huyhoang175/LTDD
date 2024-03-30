@@ -18,8 +18,9 @@ class CustomerLogin extends StatefulWidget {
 
 class _CustomerLoginState extends State<CustomerLogin> {
   CollectionReference customers =
-      FirebaseFirestore.instance.collection('customers');
-  Future<bool> checkIfDocExists(String docId) async {
+      FirebaseFirestore.instance.collection('customers');////Tạo một tham chiếu tới collection "customers" trong Firestore.
+  Future<bool> checkIfDocExists(String docId) async {////Tạo một hàm để kiểm tra xem một tài liệu có tồn tại trong Firestore không. Hàm này trả về một giá trị boolean.
+    
     try {
       var doc = await customers.doc(docId).get();
       return doc.exists;
@@ -28,28 +29,36 @@ class _CustomerLoginState extends State<CustomerLogin> {
     }
   }
 
-  bool docExists = false;
+  bool docExists =
+      false;////Khởi tạo một biến boolean docExists để kiểm tra xem tài liệu có tồn tại hay không.
 
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    
+    final GoogleSignInAccount? googleUser = await GoogleSignIn()
+        .signIn(); //Tạo một hàm để xử lý quá trình đăng nhập bằng tài khoản Google.
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     final credential = GoogleAuthProvider.credential(
+      //Lấy thông tin tài khoản Google và xác thực từ Google.
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    return await FirebaseAuth.instance
+    return await FirebaseAuth
+        .instance //Tạo một thông tin chứng thực từ dữ liệu xác thực của Google.
         .signInWithCredential(credential)
         .whenComplete(() async {
-      User user = FirebaseAuth.instance.currentUser!;
+      User user = FirebaseAuth.instance
+          .currentUser!; //Sử dụng thông tin chứng thực để đăng nhập vào Firebase Authentication.
       print(googleUser!.id);
       print(FirebaseAuth.instance.currentUser!.uid);
       print(googleUser);
       print(user);
       // _uid = FirebaseAuth.instance.currentUser!.uid;
-      docExists = await checkIfDocExists(user.uid);
+      docExists = await checkIfDocExists(
+          user.uid); //Lấy thông tin người dùng đã đăng nhập.
       docExists == false
           ? await customers.doc(user.uid).set({
+              //Kiểm tra xem tài liệu người dùng đã tồn tại trong Firestore chưa.
               'name': user.displayName,
               'email': user.email,
               'profileimage': user.photoURL,
@@ -61,26 +70,27 @@ class _CustomerLoginState extends State<CustomerLogin> {
     });
   }
 
-  late String email;
+  late String email;//Khai báo các biến cần thiết để lưu thông tin email, mật khẩu và trạng thái xử lý đang được thực hiện hay không.
   late String password;
   bool processing = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<//Khởi tạo các GlobalKey cho Form và ScaffoldMessenger.
+      FormState>(); 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
-  bool passwordVisible = false;
+  bool passwordVisible = false;//Biến này được sử dụng để xác định xem mật khẩu nên được hiển thị hay không.
   void navigate() {
-    Navigator.pushReplacementNamed(context, '/home_main');
+    Navigator.pushReplacementNamed(context, '/home_main');//Hàm này dùng để chuyển hướng đến màn hình khác.
   }
 
-  void logIn() async {
+  void logIn() async {//Khởi tạo hàm để xử lý quá trình đăng nhập.
     setState(() {
-      processing = true;
+      processing = true;//Đặt trạng thái xử lý thành true để hiển thị tiến trình đang được thực hiện.
     });
-    if (_formKey.currentState!.validate()) {
-      try {
+    if (_formKey.currentState!.validate()) {//Kiểm tra xem dữ liệu nhập vào từ form có hợp lệ không.
+      try {//Gọi các hàm xử lý đăng nhập và tải lại dữ liệu người dùng.
         await AuthRepo.singInWithEmailAndPassword(email, password);
         await AuthRepo.reloadUserData();
-        if (await AuthRepo.checkEmailVerification()) {
+        if (await AuthRepo.checkEmailVerification()) {//Xử lý quá trình đăng nhập và hiển thị thông báo nếu có lỗi.
           _formKey.currentState!.reset();
           navigate();
 
@@ -107,7 +117,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//Ghi đè phương thức build.
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
