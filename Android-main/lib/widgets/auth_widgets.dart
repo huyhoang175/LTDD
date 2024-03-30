@@ -110,12 +110,3 @@ extension EmailValidator on String {
     return RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(this);
   }
 }
-//AuthMainButton: Đây là một widget button được tạo ra để sử dụng trong các tác vụ chính liên quan đến xác thực, như đăng nhập, đăng ký, hoặc đặt lại mật khẩu. Widget này nhận vào hai thuộc tính: mainButtonLabel là nhãn của nút và onPressed là hàm được gọi khi nút được nhấn.
-
-// HaveAccount: Widget này chứa một văn bản và một nút chuyển hướng. Nó thường được sử dụng để hiển thị câu thông báo có chứa một hành động cụ thể, chẳng hạn như "Already have an account? Sign in". Widget này nhận vào ba thuộc tính: haveAccount là văn bản thông báo, actionLabel là nhãn của nút chuyển hướng, và onPressed là hàm được gọi khi nút được nhấn.
-
-// AuthHeaderLabel: Đây là một widget chứa tiêu đề chính và một nút chuyển hướng. Nó thường được sử dụng để hiển thị tiêu đề của trang xác thực. Widget này nhận vào một thuộc tính là headerLabel để thiết lập tiêu đề, thông thường là tiêu đề của trang xác thực.
-
-// textFormDecoration: Biến này được sử dụng để cấu hình trang trí cho các trường văn bản trong các mẫu nhập liệu. Nó định nghĩa các thuộc tính như labelText, hintText, border, enabledBorder, và focusedBorder để tạo ra các hiệu ứng trực quan khi người dùng tương tác với các trường nhập liệu.
-
-// EmailValidator (Extension): Đây là một phương thức mở rộng (extension) cho kiểu dữ liệu String để kiểm tra tính hợp lệ của một địa chỉ email. Phương thức này kiểm tra xem chuỗi có khớp với mẫu định dạng email hay không và trả về kết quả tương ứng.

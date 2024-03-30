@@ -118,20 +118,3 @@ class _ItemBodyState extends State<ItemBody> {
     );
   }
 }
-// Constructor: Widget này có một constructor được sử dụng để truyền các giá trị cần thiết như item, handleDelete, và handleEdit.
-
-// State: ItemBody là một StatefulWidget và có một State được quản lý bởi _ItemBodyState.
-
-// build() Method: Phương thức này xây dựng giao diện người dùng cho ItemBody. Trong phần giao diện này:
-
-// Container được sử dụng để chứa nội dung của mỗi mục trong danh sách.
-
-// Trạng thái của mục (checked hoặc unchecked) được thể hiện bằng màu nền của container. Nếu mục đã được đánh dấu là đã hoàn thành, màu nền sẽ là màu xanh. Nếu mục sắp đến hạn (theo ngày), màu nền sẽ là màu đỏ. Trong trường hợp khác, màu nền sẽ là màu trắng.
-
-// Trong phần nội dung, mỗi mục hiển thị tên và ngày của nó.
-
-// Hai biểu tượng cho phép chỉnh sửa và xóa mục. Khi nhấn vào biểu tượng xóa, một hộp thoại xác nhận sẽ hiển thị để xác nhận hành động xóa.
-
-// Checkbox: Được sử dụng để chọn hoặc bỏ chọn mục. Khi trạng thái của checkbox thay đổi, trạng thái của mục được cập nhật thông qua setState().
-
-// onTap: Được sử dụng trong InkWell để xử lý sự kiện nhấn vào biểu tượng chỉnh sửa và xóa mục. Khi nhấn vào biểu tượng xóa, một hộp thoại xác nhận sẽ hiển thị. Nếu người dùng xác nhận, handleDelete được gọi với item.id là tham số.

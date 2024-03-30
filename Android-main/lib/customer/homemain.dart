@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todolists/customer/edit.dart'; // Import EditTaskScreen
 
 class HomeMain extends StatefulWidget {
-  //Định nghĩa một StatefulWidget HomeMain, được sử dụng để hiển thị danh sách các nhiệm vụ.
   const HomeMain({Key? key}) : super(key: key);
 
   @override
@@ -15,9 +14,6 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-  //Định nghĩa một _HomeMainState để theo dõi trạng thái của widget HomeMain.
-// tasks: Là danh sách để lưu trữ thông tin về các nhiệm vụ.
-// cardColors: Là danh sách các màu được sử dụng cho các thẻ của từng nhiệm vụ.
   late List<Map<String, dynamic>> tasks = []; // List to store tasks
   late List<Color> cardColors = [
     // Colors.blue,
@@ -29,17 +25,12 @@ class _HomeMainState extends State<HomeMain> {
 
   @override
   void initState() {
-    //Hàm initState được gọi khi widget được khởi tạo, trong đó chúng ta gọi hàm loadTasks để tải danh sách các nhiệm vụ từ Firestore.
     super.initState();
     // Load tasks from Firestore when the widget initializes
     loadTasks();
   }
 
   Future<void> loadTasks() async {
-//     Hàm loadTasks được sử dụng để tải danh sách các nhiệm vụ từ Firestore.
-// Nó tạo một tham chiếu tới bộ sưu tập Firestore, sau đó tải các tài liệu từ bộ sưu tập đó.
-// Sau khi tải xong, nó xử lý mỗi tài liệu và thêm thông tin của nhiệm vụ vào danh sách tasks.
-// Cuối cùng, nó cập nhật giao diện người dùng để hiển thị danh sách các nhiệm vụ.
     try {
       // Reference to the Firestore collection
       CollectionReference addressRef = FirebaseFirestore.instance
@@ -75,8 +66,6 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   void navigateToEditScreen(String taskId) {
-//     Hàm navigateToEditScreen được sử dụng để điều hướng người dùng đến màn hình chỉnh sửa nhiệm vụ khi họ nhấp vào nút chỉnh sửa trên mỗi nhiệm vụ.
-// Sau khi người dùng hoàn thành chỉnh sửa, danh sách các nhiệm vụ được làm mới bằng cách gọi loadTasks.
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -89,9 +78,6 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
-//     Hàm showLogoutConfirmationDialog hiển thị một hộp thoại xác nhận khi người dùng nhấn nút logout.
-// Nếu người dùng chọn "Cancel", hộp thoại sẽ đóng và không làm gì.
-// Nếu người dùng chọn "OK", họ sẽ được đăng xuất khỏi ứng dụng và chuyển hướng đến màn hình đăng nhập.
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -120,11 +106,7 @@ class _HomeMainState extends State<HomeMain> {
 
   void showCompletionConfirmationDialog(BuildContext context, int index) async {
     bool isDefault = tasks[index]['default'] ?? false;
-// Hàm showCompletionConfirmationDialog hiển thị một hộp thoại xác nhận khi người dùng nhấn nút để đánh dấu một nhiệm vụ là đã hoàn thành.
-// Nếu người dùng chọn "Cancel", hộp thoại sẽ đóng và không làm gì.
-// Nếu người dùng chọn "OK", nhiệm vụ sẽ được đánh dấu là đã hoàn thành và màu của nó sẽ được cập nhật.
-// Thông tin của nhiệm vụ cũng được cập nhật trên Firestore.
-// Các phần tiếp theo của mã xử lý việc hiển thị danh sách các nhiệm vụ, bao gồm cả việc hiển thị thẻ cho mỗi nhiệm vụ, cung cấp các nút để chỉnh sửa, xóa và đánh dấu hoàn thành.
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -375,14 +357,3 @@ class _HomeMainState extends State<HomeMain> {
     );
   }
 }
-// Phương thức build xây dựng giao diện của màn hình chính của ứng dụng.
-// Scaffold chứa AppBar, FAB (Floating Action Button) và nội dung chính.
-// AppBar có màu nền tím và tiêu đề là "ToDoList".
-// FAB là một nút "Add" dẫn đến màn hình thêm nhiệm vụ mới khi nhấn vào.
-// Nội dung chính chứa danh sách các nhiệm vụ hiện có, được hiển thị trong một ListView.
-// Mỗi nhiệm vụ được hiển thị dưới dạng một Card có màu phù hợp với trạng thái mặc định của nhiệm vụ (đã hoàn thành hoặc chưa hoàn thành).
-// Mỗi Card bao gồm tiêu đề của nhiệm vụ, ngày và giờ, cùng với các nút để chỉnh sửa, xóa và đánh dấu hoàn thành nhiệm vụ.
-
-
-
-
